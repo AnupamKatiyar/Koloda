@@ -61,7 +61,7 @@ public class DraggableCardView: UIView, UIGestureRecognizerDelegate {
     private var overlayView: OverlayView?
     private(set) var contentView: UIView?
     
-    private var panGestureRecognizer: PanDirectionGestureRecognizer!
+    private var panGestureRecognizer: UIPanGestureRecognizer!
     private var tapGestureRecognizer: UITapGestureRecognizer!
     private var animationDirectionY: CGFloat = 1.0
     private var dragBegin = false
@@ -101,7 +101,7 @@ public class DraggableCardView: UIView, UIGestureRecognizerDelegate {
     }
     
     private func setup() {
-        panGestureRecognizer = PanDirectionGestureRecognizer(direction: .horizontal, target: self, action: #selector(DraggableCardView.panGestureRecognized(_:)))
+        panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(DraggableCardView.panGestureRecognized(_:)))
         addGestureRecognizer(panGestureRecognizer)
         panGestureRecognizer.delegate = self
         tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(DraggableCardView.tapRecognized(_:)))
@@ -225,6 +225,12 @@ public class DraggableCardView: UIView, UIGestureRecognizerDelegate {
         dragDistance = gestureRecognizer.translation(in: self)
         
         let touchLocation = gestureRecognizer.location(in: self)
+        
+        let velocity = gestureRecognizer.velocity(in: gestureRecognizer.view)
+        print(velocity)
+        if abs(velocity.x) > abs(velocity.y) {
+            return
+        }
         
         switch gestureRecognizer.state {
         case .began:
@@ -450,38 +456,3 @@ public class DraggableCardView: UIView, UIGestureRecognizerDelegate {
     }
 }
 
-
-
-
-import UIKit.UIGestureRecognizerSubclass
-
-enum PanDirection {
-    case vertical
-    case horizontal
-}
-
-class PanDirectionGestureRecognizer: UIPanGestureRecognizer {
-    
-    let direction: PanDirection
-    
-    init(direction: PanDirection, target: AnyObject, action: Selector) {
-        self.direction = direction
-        super.init(target: target, action: action)
-    }
-    
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
-        super.touchesMoved(touches, with: event)
-        
-        if state == .began {
-            let vel = velocity(in: view)
-            switch direction {
-            case .horizontal where fabs(vel.y) > fabs(vel.x):
-                state = .cancelled
-            case .vertical where fabs(vel.x) > fabs(vel.y):
-                state = .cancelled
-            default:
-                break
-            }
-        }
-    }
-}
