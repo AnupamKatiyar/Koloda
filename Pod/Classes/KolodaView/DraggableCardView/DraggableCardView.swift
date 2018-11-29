@@ -228,7 +228,8 @@ public class DraggableCardView: UIView, UIGestureRecognizerDelegate {
         
         let velocity = gestureRecognizer.velocity(in: gestureRecognizer.view)
         print(velocity)
-        if abs(velocity.x) > abs(velocity.y) {
+        if abs(velocity.x) < abs(velocity.y) {
+            gestureRecognizer.state = .cancelled
             return
         }
         
