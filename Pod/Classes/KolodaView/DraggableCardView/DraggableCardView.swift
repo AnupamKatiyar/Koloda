@@ -230,7 +230,7 @@ public class DraggableCardView: UIView, UIGestureRecognizerDelegate {
         case .began:
             
             let velocity = gestureRecognizer.velocity(in: gestureRecognizer.view)
-            self.panGestureRecognizer.isEnabled = (abs(velocity.x) > (velocity.y))
+            self.panGestureRecognizer.isEnabled = (abs(velocity.x) > abs(velocity.y))
             print(velocity.x)
             print(velocity.y)
             
