@@ -229,10 +229,10 @@ public class DraggableCardView: UIView, UIGestureRecognizerDelegate {
         switch gestureRecognizer.state {
         case .began:
             
-            let velocity = gestureRecognizer.velocity(in: gestureRecognizer.view)
-            self.panGestureRecognizer.isEnabled = (abs(velocity.x) > abs(velocity.y))
-            print(velocity.x)
-            print(velocity.y)
+//            let velocity = gestureRecognizer.velocity(in: gestureRecognizer.view)
+//            self.panGestureRecognizer.isEnabled = (abs(velocity.x) > abs(velocity.y))
+//            print(velocity.x)
+//            print(velocity.y)
             
             let firstTouchPoint = gestureRecognizer.location(in: self)
             let newAnchorPoint = CGPoint(x: firstTouchPoint.x / bounds.width, y: firstTouchPoint.y / bounds.height)
