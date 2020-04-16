@@ -38,8 +38,8 @@ public extension KolodaViewDataSource {
     }
  
     func kolodaSpeedThatCardShouldDrag(_ koloda: KolodaView) -> DragSpeed {
-		return .default
-	}
+        return .default
+    }
 }
 
 public protocol KolodaViewDelegate: class {
@@ -128,7 +128,7 @@ open class KolodaView: UIView, DraggableCardDelegate {
         return visibleCards.isEmpty
     }
     
-    public(set) public var currentCardIndex = 0
+    public var currentCardIndex = 0
     private(set) public var countOfCards = 0
     public var countOfVisibleCards = defaultCountOfVisibleCards
     private var visibleCards = [DraggableCardView]()
@@ -297,7 +297,7 @@ open class KolodaView: UIView, DraggableCardDelegate {
     }
     
     func card(cardAllowedDirections card: DraggableCardView) -> [SwipeResultDirection] {
-        let index = currentCardIndex + visibleCards.index(of: card)!
+        let index = currentCardIndex + visibleCards.firstIndex(of: card)!
         return delegate?.koloda(self, allowedDirectionsForIndex: index) ?? [.left, .right]
     }
     
@@ -330,7 +330,7 @@ open class KolodaView: UIView, DraggableCardDelegate {
     }
     
     func card(cardWasTapped card: DraggableCardView) {
-        guard let visibleIndex = visibleCards.index(of: card) else { return }
+        guard let visibleIndex = visibleCards.firstIndex(of: card) else { return }
         
         let index = currentCardIndex + visibleIndex
         delegate?.koloda(self, didSelectCardAt: index)
@@ -341,7 +341,7 @@ open class KolodaView: UIView, DraggableCardDelegate {
     }
     
     func card(cardShouldDrag card: DraggableCardView) -> Bool {
-        guard let visibleIndex = visibleCards.index(of: card) else { return true}
+        guard let visibleIndex = visibleCards.firstIndex(of: card) else { return true}
         
         let index = currentCardIndex + visibleIndex
         return delegate?.koloda(self, shouldDragCardAt: index) ?? true
